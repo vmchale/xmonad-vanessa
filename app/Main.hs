@@ -1,3 +1,3 @@
-import Config
+import XMonad.Config.Vanessa
 
 main = vConfig

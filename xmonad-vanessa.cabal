@@ -10,12 +10,11 @@ maintainer:          tmchale@wisc.edu
 copyright:           2016 Vanessa McHale
 category:            Web
 build-type:          Simple
--- extra-source-files:
 cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Config
+  exposed-modules:     XMonad.Config.Vanessa
   build-depends:       base >= 4.7 && < 5
                      , xmonad
                      , xmonad-contrib
