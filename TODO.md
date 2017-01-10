@@ -1,0 +1,2 @@
+- [ ] volume control
+- [ ] line 459 of Core.hs v. 0.12! has the info we need I think
