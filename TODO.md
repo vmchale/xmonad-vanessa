@@ -15,3 +15,5 @@
     - [ ] spotify to #5
     - [ ] firefox to #2
     - [ ] float gimp
+- [ ] PRs
+    - [ ] consider reporting bug to ghc-mod people w.r.t. the .yaml file
