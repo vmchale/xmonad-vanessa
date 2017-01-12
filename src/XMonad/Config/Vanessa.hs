@@ -17,6 +17,7 @@ import Control.Monad.IO.Class
 import System.Process hiding (spawn)
 --Parsers
 --import Text.Megaparsec
+import TextShow.Data.Integral.Tibetan
 
 -- | Datatype for a keyboard layout.
 -- Consider spinning this off into its own module
@@ -48,10 +49,12 @@ myConfig xmproc = def { terminal   = "gnome-terminal"
 vLogHook xmproc = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc
                                             , ppTitle = const ""
                                             , ppLayout = const ""
-                                            , ppHiddenNoWindows = id
-                                            , ppHidden = (xmobarColor "darkorange" "black")
+                                            , ppHiddenNoWindows = showBo
+                                            , ppHidden = (xmobarColor "darkorange" "black") . showBo
                                             }
  
+showBo' = (maybe (const "Err")) . showBo
+
 -- | Doesn't work but I'm trying so hey. 
 myManageHook = composeAll [ resource =? "gimp"          --> doFloat
                           , resource =? "spotify"       --> doF (shift "5")
@@ -75,17 +78,21 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?
              --overambition:vim-like window management
 
+-- | executable to yield current layout
+-- should put this in a separate module tbh
 parseKBIO :: IO ()
 parseKBIO = putStrLn =<< (show <$> parseKB)
 
+-- | Get current keyboard layout
 parseKB :: IO KbLayout
 parseKB = do
     out <- lines <$> readCreateProcess (shell "setxkbmap -query") ""
     let strip i = (dropWhile (==' ')) . (drop 1) . (dropWhile (/=':')) . (!!i)
+    let line = flip strip out
     if length out == 3 then
-        pure (Simple (strip 2 out))
+        pure (Simple (line 2))
     else
-        pure (Regional (strip 2 out) (strip 3 out))
+        pure (Regional (line 2) (line 3))
 
 tibetan  = (Regional "cn" "tib")
 accented = (Regional "us" "altgr-intl")

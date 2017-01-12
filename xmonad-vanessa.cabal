@@ -22,6 +22,7 @@ library
                      , containers
                      , process
                      , X11
+                     , tibetan-utils
   default-language:    Haskell2010
 
 executable xmonad
