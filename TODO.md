@@ -1,2 +1,17 @@
-- [ ] volume control
-- [ ] line 459 of Core.hs v. 0.12! has the info we need I think
+- [x] volume control
+- [x] available window information
+- [x] madison weather
+- [ ] xmobar
+    - [ ] current keyboard
+    - [ ] current volume (easy)
+    - [ ] current brightness (easy)
+- [ ] keyboard
+    - [x] keymaps to adjust volume
+    - [x] keymaps to adjust brightness
+    - [x] screenshot keymaps
+    - [ ] media keys
+    - [ ] tibetan/etc. keyboards
+- [ ] hooks
+    - [ ] spotify to #5
+    - [ ] firefox to #2
+    - [ ] float gimp
