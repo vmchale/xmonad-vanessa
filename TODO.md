@@ -2,7 +2,7 @@
 - [x] available window information
 - [x] madison weather
 - [ ] xmobar
-    - [ ] current keyboard
+    - [x] current keyboard
     - [ ] current volume (easy)
     - [ ] current brightness (easy)
 - [ ] keyboard
@@ -10,7 +10,7 @@
     - [x] keymaps to adjust brightness
     - [x] screenshot keymaps
     - [ ] media keys
-    - [ ] tibetan/etc. keyboards
+    - [x] tibetan/etc. keyboards
 - [ ] hooks
     - [ ] spotify to #5
     - [ ] firefox to #2

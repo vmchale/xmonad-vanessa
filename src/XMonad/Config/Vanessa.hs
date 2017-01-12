@@ -1,5 +1,5 @@
 -- | Configuration with defaults I like and brightness adjustable for my computer
-module XMonad.Config.Vanessa where --(vConfig) where
+module XMonad.Config.Vanessa (vConfig, parseKBIO) where
 
 --XMonad modules
 import XMonad
@@ -21,6 +21,11 @@ import System.Process hiding (spawn)
 -- | Datatype for a keyboard layout.
 -- Consider spinning this off into its own module
 data KbLayout = Simple String | Regional String String
+
+instance Show KbLayout where
+    show (Simple "us") = "US"
+    show (Regional "cn" "tib") = xmobarColor "yellow" "black" "Tibetan"
+    show (Regional "us" "altgr-intl") = "US Extended"
 
 -- | Set default keyboard layout to vanilla "us"
 instance Default KbLayout where
@@ -47,7 +52,7 @@ vLogHook xmproc = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc
                                             , ppHidden = (xmobarColor "darkorange" "black")
                                             }
  
--- | Doesn't work by I'm trying so hey. 
+-- | Doesn't work but I'm trying so hey. 
 myManageHook = composeAll [ resource =? "gimp"          --> doFloat
                           , resource =? "spotify"       --> doF (shift "5")
                           , resource =? "google-chrome" --> doF (shift "2")
@@ -65,16 +70,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              , ((modm, xK_F1), setLang def)
              , ((modm, xK_F2), setLang tibetan)
              , ((modm, xK_F3), setLang accented)
-             --, ((shiftMask, xK_F5), parseKB >>= spawn . ((++) "xmessage "))
              ]
              --alt + h and alt+l should go over by one?
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?
              --overambition:vim-like window management
 
-parseKB :: X String --KbLayout
-parseKB = liftIO $ do
-    out <- readCreateProcess (shell "setxkbmap -query") ""
-    pure . (dropWhile (==' ')) . (takeWhile (/=':')) . (!!3) . lines $ out
+parseKBIO :: IO ()
+parseKBIO = putStrLn =<< (show <$> parseKB)
+
+parseKB :: IO KbLayout
+parseKB = do
+    out <- lines <$> readCreateProcess (shell "setxkbmap -query") ""
+    let strip i = (dropWhile (==' ')) . (drop 1) . (dropWhile (/=':')) . (!!i)
+    if length out == 3 then
+        pure (Simple (strip 2 out))
+    else
+        pure (Regional (strip 2 out) (strip 3 out))
 
 tibetan  = (Regional "cn" "tib")
 accented = (Regional "us" "altgr-intl")
