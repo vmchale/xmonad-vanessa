@@ -6,13 +6,24 @@ import XMonad.Layout.Spiral
 import XMonad.Layout.Reflect
 import Control.Monad hiding (guard)
 import Control.Monad.IO.Class
+import XMonad.Util.Run
 import qualified Data.Map as M
+import XMonad.Hooks.ManageDocks
 
 vConfig :: IO ()
-vConfig = xmonad =<< xmobar config
+vConfig = xmonad . config =<< spawnPipe "xmobar"
     where config = myConfig
 
-myConfig = def { terminal = "gnome-terminal" , keys = newKeys }-- , layoutHook = myLayout }
+myConfig xmproc = def { terminal = "gnome-terminal" , keys = newKeys , layoutHook = myLayout , logHook = (vLogHook xmproc) }
+
+-- | Provides custom hooks to xmonad. This disables printing the window title.
+-- (Consider putting this in its own module)
+vLogHook xmproc = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc
+                                             , ppTitle = const ""
+                                             , ppLayout = const ""
+                                             , ppHiddenNoWindows = id
+                                             , ppHidden = (xmobarColor "darkorange" "black")
+                                             }
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              [ ((modm, xK_Up), raiseVolume 5)
@@ -28,7 +39,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              --overambition:vim-like window management
 
 --fix for xmobar
-myLayout = normalPanes ||| reflectHoriz normalPanes ||| Full ||| spiral (16/9)
+myLayout = avoidStruts $ normalPanes ||| reflectHoriz normalPanes ||| Full ||| spiral (16/9)
     where normalPanes       = Tall 1 (3/100) (3/7)
 
 --split off into its own module
