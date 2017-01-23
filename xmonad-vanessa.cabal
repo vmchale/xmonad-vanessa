@@ -15,6 +15,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     XMonad.Config.Vanessa
+                     , XMonad.Util.Brightness
+                     , XMonad.Util.Keyboard
+                     , XMonad.Util.Volume
   build-depends:       base >= 4.7 && < 5
                      , xmonad
                      , xmonad-contrib

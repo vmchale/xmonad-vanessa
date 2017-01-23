@@ -8,7 +8,7 @@ packages:
 extra-deps:
 - xmonad-0.12
 - X11-xft-0.3.1
-- tibetan-utils-0.1.0.0
+- tibetan-utils-0.1.0.3
 - xmonad-contrib-0.12
 - xmonad-extras-0.12.1
-resolver: lts-7.15
+resolver: nightly-2017-01-12
