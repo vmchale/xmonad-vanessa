@@ -9,15 +9,14 @@ import XMonad.Layout.Reflect
 import XMonad.Util.Run
 import XMonad.StackSet
 import XMonad.Hooks.ManageDocks
---Monads etc. 
+--Monads etc.
+import Data.Maybe
 import qualified Data.Map as M
 import Control.Monad hiding (guard)
 import Control.Monad.IO.Class
 --
 import System.Process hiding (spawn)
 --Parsers
---import Text.Megaparsec
-import TextShow.Data.Integral.Tibetan
 
 -- | Datatype for a keyboard layout.
 -- Consider spinning this off into its own module
@@ -25,6 +24,7 @@ data KbLayout = Simple String | Regional String String
 
 instance Show KbLayout where
     show (Simple "us") = "US"
+    show (Simple "layout") = "US"
     show (Regional "cn" "tib") = xmobarColor "yellow" "black" "Tibetan"
     show (Regional "us" "altgr-intl") = "US Extended"
 
@@ -49,11 +49,12 @@ myConfig xmproc = def { terminal   = "gnome-terminal"
 vLogHook xmproc = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc
                                             , ppTitle = const ""
                                             , ppLayout = const ""
-                                            , ppHiddenNoWindows = showBo
-                                            , ppHidden = (xmobarColor "darkorange" "black") . showBo
+                                            , ppHiddenNoWindows = id
+                                            , ppHidden = (xmobarColor "darkorange" "black")
+                                            , ppVisible = (xmobarColor "yellow" "black")
                                             }
  
-showBo' = (maybe (const "Err")) . showBo
+--showBo' = (fromMaybe "Err") . showBo . read
 
 -- | Doesn't work but I'm trying so hey. 
 myManageHook = composeAll [ resource =? "gimp"          --> doFloat
@@ -68,6 +69,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              , ((modm, xK_Left), brighten (-100))
              , ((modm, xK_Right), brighten 100)
              , ((modm, xK_F8), toggleMute)
+             , ((modm, xK_p), spawn "yeganesh -x")
              , ((modm .|. shiftMask, xK_End), spawn "shutdown now")
              , ((modm, xK_F12), spawn "cd ~/.screenshots && scrot")
              , ((modm, xK_F1), setLang def)
@@ -77,6 +79,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              --alt + h and alt+l should go over by one?
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?
              --overambition:vim-like window management
+
+
+keysToRemove :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+keysToRemove x@(XConfig {XMonad.modMask = modm}) = M.fromList
+        [ ((modm , xK_p ), return ())
+        ]
 
 -- | executable to yield current layout
 -- should put this in a separate module tbh
@@ -129,4 +137,4 @@ guard = (gu 2000) . (gl 0)
 vol :: String -> X ()
 vol = spawn . ((++) "amixer -D pulse sset Master ")
 
-newKeys x = myKeys x `M.union` keys def x
+newKeys x = myKeys x `M.union` (keys def x `M.difference` keysToRemove x)

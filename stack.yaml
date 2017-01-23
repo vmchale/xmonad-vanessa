@@ -1,13 +1,14 @@
-resolver: lts-7.15
-packages:
-- '.'
-extra-deps:
-- X11-xft-0.3.1
-- xmonad-contrib-0.12
-- xmonad-extras-0.12.1
-# Override default flag values for local packages and extra-deps
 flags:
   xmonad-extras:
     with_hint: false
     with_mpd: false
 extra-package-dbs: []
+packages:
+- '.'
+extra-deps:
+- xmonad-0.12
+- X11-xft-0.3.1
+- tibetan-utils-0.1.0.0
+- xmonad-contrib-0.12
+- xmonad-extras-0.12.1
+resolver: lts-7.15
