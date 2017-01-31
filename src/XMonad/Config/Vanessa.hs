@@ -1,4 +1,4 @@
--- | Configuration with defaults I like and brightness adjustable for my computer
+-- | Configuration with defaults I like and brightness adjustable for my computer and appropriate 
 module XMonad.Config.Vanessa (vConfig) where
 
 --XMonad modules
@@ -11,12 +11,15 @@ import XMonad.Util.Run
 import XMonad.Util.Volume
 import XMonad.Util.Brightness
 import XMonad.Util.Keyboard
-import XMonad.StackSet
+import XMonad.Util.MediaKeys
+import XMonad.StackSet as W
 --Monads etc.
 import qualified Data.Map as M
 import Data.Monoid
 import Control.Monad hiding (guard)
 import Control.Monad.IO.Class
+--
+import Control.Concurrent
 
 -- | IO action of the whole thing
 vConfig :: IO ()
@@ -41,22 +44,32 @@ vLogHook xmproc = dynamicLogWithPP xmobarPP { ppOutput = hPutStrLn xmproc
  
 -- | Doesn't work but I'm trying so hey. 
 myManageHook :: Query (Endo WindowSet)
-myManageHook = composeAll [ resource =? "gimp"          --> doFloat
-                          , resource =? "spotify"       --> doF (shift "5")
-                          , resource =? "google-chrome" --> doF (shift "2")
+myManageHook = composeAll [ className =? "Gimp"          --> doFloat
+                          , resource =? "spotify"       --> doF (W.shift "5")
+                          , resource =? "google-chrome" --> doF (W.shift "2")
+                          , resource =? "crx_bikioccmkafdpakkkcpdbppfkghcmihk" --> doF (W.shift "7")
                           ]
 
 -- | Custom keymaps to adjust volume, brightness, and 
 myKeys :: XConfig t -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
-             [ ((modm, xK_Up), raiseVolume 5)
+myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ mediaKeys
+             [ --volume control
+               ((modm, xK_Up), raiseVolume 5)
              , ((modm, xK_Down), lowerVolume 5)
+             , ((modm, xK_F8), toggleMute)
+             -- brightness
              , ((modm, xK_Left), brighten (-100))
              , ((modm, xK_Right), brighten 100)
-             , ((modm, xK_F8), toggleMute)
-             , ((modm, xK_p), spawn "yeganesh -x")
-             , ((modm .|. shiftMask, xK_End), spawn "shutdown now")
+             --program shortcuts
+             , ((modm, xK_q), spawn "spotify") 
+             , ((modm .|. shiftMask, xK_n), spawn "google-chrome --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk") --open signal
+             --launch bar
+             , ((modm, xK_p), spawn "$(yeganesh -x)")
+             --screenshots
              , ((modm, xK_F12), spawn "cd ~/.screenshots && scrot")
+             --shutdown etc.
+             , ((modm .|. shiftMask, xK_End), spawn "shutdown now")
+             --switch keyboards
              , ((modm, xK_F1), setLang def)
              , ((modm, xK_F2), setLang tibetan)
              , ((modm, xK_F3), setLang accented)
@@ -65,12 +78,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?
              --overambition:vim-like window management
 
-
 -- | Function giving keybindings to undo
 keysToRemove :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 keysToRemove x@(XConfig {XMonad.modMask = modm}) = M.fromList
-        [ ((modm , xK_p ), return ())
-        ]
+        [ ((modm, xK_p), pure ()) ]
 
 -- | Gives a better ratio for the master pane and lets us spiral windows
 myLayout = avoidStruts $ normalPanes ||| reflectHoriz normalPanes ||| Full ||| spiral (16/9)
