@@ -52,12 +52,16 @@ myManageHook = composeAll [ className =? "Gimp"          --> doFloat
 
 -- | Custom keymaps to adjust volume, brightness, and 
 myKeys :: XConfig t -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ mediaKeys
+myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              [ --volume control
                ((modm, xK_Up), raiseVolume 5)
              , ((modm, xK_Down), lowerVolume 5)
              , ((modm, xK_F8), toggleMute)
-             -- brightness
+             --personal (extra) media keys
+             , ((modm, xK_End), audioNext)
+             , ((modm, xK_Page_Up), audioPrev)
+             , ((modm, xK_Home), audioPlayPause)
+             --brightness
              , ((modm, xK_Left), brighten (-100))
              , ((modm, xK_Right), brighten 100)
              --program shortcuts
@@ -67,6 +71,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ mediaKeys
              , ((modm, xK_p), spawn "$(yeganesh -x)")
              --screenshots
              , ((modm, xK_F12), spawn "cd ~/.screenshots && scrot")
+             , ((0, xK_Print), spawn "cd ~/.screenshots && scrot")
              --shutdown etc.
              , ((modm .|. shiftMask, xK_End), spawn "shutdown now")
              --switch keyboards
