@@ -5,6 +5,12 @@
 # http://docs.haskellstack.org/en/stable/yaml_configuration/
 
 # A warning or info to be displayed to the user on config load.
+user-message: ! 'Warning (added by new or init): Specified resolver could not satisfy
+  all dependencies. Some external packages have been added as dependencies.
+
+  You can suppress this message by removing it from stack.yaml
+
+'
 
 # Resolver to choose a 'specific' stackage snapshot or a compiler version.
 # A snapshot resolver dictates the compiler version and the set of packages
@@ -17,7 +23,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: lts-7.16
+resolver: lts-7.19
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -38,13 +44,11 @@ resolver: lts-7.16
 # non-dependency (i.e. a user package), and its test suites and benchmarks
 # will not be run. This is useful for tweaking upstream packages.
 packages:
+- dist-newstyle/tmp/xmonad-contrib-26613/xmonad-contrib-0.12
 - '.'
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
-- X11-xft-0.3.1
-- tibetan-utils-0.1.0.1
-- xmonad-contrib-0.12
 - xmonad-extras-0.12.1
 
 # Override default flag values for local packages and extra-deps
@@ -52,6 +56,8 @@ flags:
   xmonad-extras:
     with_hint: false
     with_mpd: false
+  xmonad-contrib:
+    use_xft: false
 
 # Extra package databases containing global packages
 extra-package-dbs: []
