@@ -29,7 +29,7 @@ vConfig = xmonad . config =<< spawnPipe "xmobar"
     where config = myConfig
 
 -- | Custom configuration taking in one pipe to xmobar
-myConfig xmproc = def { terminal   = "gnome-terminal" -- "alacritty"
+myConfig xmproc = def { terminal   = "alacritty"
                       , keys       = newKeys
                       , layoutHook = myLayout
                       , logHook    = (vLogHook xmproc)
@@ -89,6 +89,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              , ((modm, xK_F1), setLang def)
              , ((modm, xK_F2), setLang tibetan)
              , ((modm, xK_F3), setLang accented)
+             , ((shiftMask, xK_F11), spawn "cargo install --git https://github.com/jwilm/alacritty.git --force")
              ]
              --alt + h and alt+l should go over by one?
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?
