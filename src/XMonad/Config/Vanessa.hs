@@ -14,6 +14,7 @@ import XMonad.Util.Keyboard
 import XMonad.Util.MediaKeys
 import XMonad.Util.NamedWindows
 import XMonad.StackSet hiding (filter)
+import XMonad.Hooks.ManageDocks
 --Monads etc.
 import qualified Data.Map as M
 import Data.Maybe
@@ -29,11 +30,11 @@ vConfig = xmonad . config =<< spawnPipe "xmobar"
     where config = myConfig
 
 -- | Custom configuration taking in one pipe to xmobar
-myConfig xmproc = def { terminal   = "alacritty"
-                      , keys       = newKeys
-                      , layoutHook = myLayout
-                      , logHook    = (vLogHook xmproc)
-                      , manageHook = myManageHook }
+myConfig xmproc = docks $ def { terminal   = "alacritty"
+                              , keys       = newKeys
+                              , layoutHook = myLayout
+                              , logHook    = (vLogHook xmproc)
+                              , manageHook = myManageHook }
 
 -- | get the current music playing (assumed to be in number 5)
 musicString :: X String
