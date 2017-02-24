@@ -53,7 +53,7 @@ vLogHook xmproc = musicString >>= \m ->  dynamicLogWithPP xmobarPP { ppOutput = 
                                                                    , ppVisible = (xmobarColor "yellow" "black")
                                                                    }
  
--- | Doesn't work but I'm trying so hey. 
+-- | Doesn't work on spotify
 myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll [ className =? "Gimp"                                --> doFloat
                           , resource =? "spotify"                              --> doF (shift "5")
@@ -61,6 +61,7 @@ myManageHook = composeAll [ className =? "Gimp"                                -
                           , resource =? "crx_bikioccmkafdpakkkcpdbppfkghcmihk" --> doF (shift "7")
                           , resource =? "crx_bgkodfmeijboinjdegggmkbkjfiagaan" --> doF (shift "7")
                           , className =? "libreoffice-writer" --> doFloat
+                          , className =? "keepassx" --> doFloat
                           ]
 
 -- | Custom keymaps to adjust volume, brightness, and 
