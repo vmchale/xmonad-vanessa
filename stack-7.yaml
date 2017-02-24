@@ -23,7 +23,7 @@ user-message: ! 'Warning (added by new or init): Specified resolver could not sa
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: lts-8.2
+resolver: lts-6.30
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -48,7 +48,11 @@ packages:
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
+- X11-1.8
 - X11-xft-0.3.1
+- directory-1.3.0.2
+- process-1.6.0.0
+- xmonad-0.13
 - xmonad-contrib-0.13
 
 # Override default flag values for local packages and extra-deps
