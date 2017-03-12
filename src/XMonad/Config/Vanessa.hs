@@ -62,6 +62,7 @@ myManageHook = composeAll [ className =? "Gimp"                                -
                           , resource =? "crx_bgkodfmeijboinjdegggmkbkjfiagaan" --> doF (shift "7")
                           , className =? "libreoffice-writer" --> doFloat
                           , className =? "keepassx" --> doFloat
+                          , className =? "xviewer" --> doFloat
                           ]
 
 -- | Custom keymaps to adjust volume, brightness, and 
@@ -80,6 +81,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              , ((modm, xK_Right), brighten 100)
              --program shortcuts
              , ((modm, xK_q), spawn "spotify") 
+             , ((modm .|. controlMask, xK_Return), spawn "gnome-terminal") 
              , ((modm .|. shiftMask, xK_n), spawn "google-chrome --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk") --open signal
              --launch bar
              , ((modm, xK_p), spawn "$(yeganesh -x)")
@@ -91,6 +93,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              , ((modm, xK_F1), setLang def)
              , ((modm, xK_F2), setLang tibetan)
              , ((modm, xK_F3), setLang accented)
+             , ((modm, xK_F4), setLang français)
+             , ((modm, xK_F5), setLang deutsch)
+             , ((modm, xK_F6), setLang anglisc)
+             , ((modm, xK_F7), setLang dansk)
+             , ((modm, xK_F9), setLang dzongkha)
              , ((shiftMask, xK_F11), spawn "cargo install --git https://github.com/jwilm/alacritty.git --force")
              ]
              --alt + h and alt+l should go over by one?
