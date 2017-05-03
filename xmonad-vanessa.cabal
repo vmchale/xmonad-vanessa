@@ -1,5 +1,5 @@
 name:                xmonad-vanessa
-version:             0.1.0.8
+version:             0.1.1.0
 synopsis:            Custom xmonad, which uses stack and sets various defaults
 description:         Please see README.md
 homepage:            https://github.com/vmchale/xmonad-vanessa#readme
@@ -10,7 +10,7 @@ maintainer:          tmchale@wisc.edu
 copyright:           2016 Vanessa McHale
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md, stack.yaml, stack-nightly.yaml, stack-8.yaml
+extra-source-files:  README.md, stack.yaml
 cabal-version:       >=1.10
 
 library

@@ -57,12 +57,14 @@ vLogHook xmproc = musicString >>= \m ->  dynamicLogWithPP xmobarPP { ppOutput = 
 myManageHook :: Query (Endo WindowSet)
 myManageHook = composeAll [ className =? "Gimp"                                --> doFloat
                           , resource =? "spotify"                              --> doF (shift "5")
-                          , resource =? "google-chrome"                        --> doF (shift "2")
+                          , className =? "Firefox"                             --> doF (shift "5")
+                          , className =? "google-chrome"                       --> doF (shift "3")
                           , resource =? "crx_bikioccmkafdpakkkcpdbppfkghcmihk" --> doF (shift "7")
                           , resource =? "crx_bgkodfmeijboinjdegggmkbkjfiagaan" --> doF (shift "7")
-                          , className =? "libreoffice-writer" --> doFloat
-                          , className =? "keepassx" --> doFloat
-                          , className =? "xviewer" --> doFloat
+                          , resource =? "bash-bar" --> doFloat 
+                          , className =? "libreoffice-writer"                  --> doFloat
+                          , className =? "keepassx"                            --> doFloat
+                          , className =? "xviewer"                             --> doFloat
                           ]
 
 -- | Custom keymaps to adjust volume, brightness, and 
@@ -89,6 +91,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              , ((0, xK_Print), spawn "cd ~/.screenshots && scrot")
              --shutdown etc.
              , ((modm .|. shiftMask, xK_End), spawn "shutdown now")
+             -- lock screen
+             , ((modm, xK_End), spawn "slock")
              --switch keyboards
              , ((modm, xK_F1), setLang def)
              , ((modm, xK_F2), setLang tibetan)
