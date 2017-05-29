@@ -1,5 +1,5 @@
 name:                xmonad-vanessa
-version:             0.1.1.0
+version:             0.1.1.1
 synopsis:            Custom xmonad, which uses stack and sets various defaults
 description:         Please see README.md
 homepage:            https://github.com/vmchale/xmonad-vanessa#readme
@@ -51,7 +51,7 @@ executable xmonad
   if flag(gold)
     ghc-options:       -optl-fuse-ld=gold
     ld-options:        -fuse-ld=gold
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -O3
+  ghc-options:         -O3 -threaded 
   -- -fllvm -optlo-O3
   build-depends:       base
                      , xmonad-vanessa
