@@ -4,7 +4,6 @@ module XMonad.Config.Vanessa (vConfig) where
 --XMonad modules
 import XMonad hiding (workspaces)
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Spiral
 import XMonad.Layout.Reflect
 import XMonad.Util.Run
@@ -19,10 +18,6 @@ import XMonad.Hooks.ManageDocks
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
-import Control.Monad hiding (guard)
-import Control.Monad.IO.Class
---
-import Control.Concurrent
 
 -- | IO action of the whole thing
 vConfig :: IO ()
