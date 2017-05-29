@@ -17,8 +17,13 @@ packages:
    location:
        git: http://github.com/ekmett/lens.git
        commit: 7031e00f62a704a86c3149c75c1e2afc059af022
-extra-deps:
-    - haskell-qrencode-1.0.4
+#extra-deps:
+#    - xmobar-0.24.5
+#flags:
+#    xmobar:
+#        with_xft: true
+#        with_iwlib: true
+#        with_threaded: true
 allow-newer: true
 compiler: ghc-8.2.0.20170507
 compiler-check: match-exact
