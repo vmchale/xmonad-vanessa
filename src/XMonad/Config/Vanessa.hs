@@ -40,8 +40,8 @@ myConfig xmproc = docks $ def { terminal   = "alacritty"
 musicString :: X String
 musicString = do
     winset <- gets windowset
-    let p = (== "5") . fst
-    wt <- maybe (pure "") (fmap show . getName) . (fmap snd) . listToMaybe . filter p $ zip (((map tag . workspaces)) winset) (allWindows winset) 
+    {-- let p = (== "5") . fst --}
+    wt <- maybe (pure "") (fmap show . getName) . (fmap snd) . listToMaybe {--. filter p--} $ zip (((map tag . workspaces)) winset) (allWindows winset) 
     pure . (xmobarColor "green" "black") . take 40 $ wt
 
 -- | Provides custom hooks to xmonad. This disables printing the window title/connects xmobar and xmonad.
@@ -55,14 +55,15 @@ vLogHook xmproc = musicString >>= \m ->  dynamicLogWithPP xmobarPP { ppOutput = 
  
 -- | Doesn't work on spotify
 myManageHook :: Query (Endo WindowSet)
-myManageHook = composeAll [ className =? "Gimp"                                --> doFloat
+myManageHook = composeAll [ className =? "Gimp-2.8"                            --> doFloat
                           , resource =? "spotify"                              --> doF (shift "5")
                           , className =? "Firefox"                             --> doF (shift "5")
                           , className =? "google-chrome"                       --> doF (shift "3")
                           , resource =? "crx_bikioccmkafdpakkkcpdbppfkghcmihk" --> doF (shift "7")
                           , resource =? "crx_bgkodfmeijboinjdegggmkbkjfiagaan" --> doF (shift "7")
-                          , resource =? "bash-bar" --> doFloat 
+                          , resource =? "launcher"                             --> doFloat
                           , className =? "libreoffice-writer"                  --> doFloat
+                          , className =? "Gimp"                                --> doFloat
                           , className =? "keepassx"                            --> doFloat
                           , className =? "xviewer"                             --> doFloat
                           ]
@@ -84,9 +85,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              --program shortcuts
              , ((modm, xK_q), spawn "spotify") 
              , ((modm .|. controlMask, xK_Return), spawn "gnome-terminal") 
-             , ((modm .|. shiftMask, xK_n), spawn "google-chrome --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk") --open signal
+             --open signal
+             , ((modm .|. shiftMask, xK_n), spawn "google-chrome --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk")
              --launch bar
              , ((modm, xK_p), spawn "$(yeganesh -x)")
+             -- bash command execution bar
+             , ((modm .|. shiftMask, xK_l), spawn "launcher")
              --screenshots
              , ((0, xK_Print), spawn "cd ~/.screenshots && scrot")
              --shutdown etc.
@@ -102,7 +106,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = mediaKeys . M.fromList $
              , ((modm, xK_F6), setLang anglisc)
              , ((modm, xK_F7), setLang dansk)
              , ((modm, xK_F9), setLang dzongkha)
-             , ((shiftMask, xK_F11), spawn "cargo install --git https://github.com/jwilm/alacritty.git --force")
+             -- bad idea; use ctrl + shift + enter to open gnome terminal instead
+             -- , ((shiftMask, xK_F11), spawn "cargo install --git https://github.com/jwilm/alacritty.git --force")
              ]
              --alt + h and alt+l should go over by one?
              --idea: "browse" workspaces but multiple of them/autospawn in a new one?

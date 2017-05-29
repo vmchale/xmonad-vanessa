@@ -9,11 +9,11 @@
     - [x] keymaps to adjust volume
     - [x] keymaps to adjust brightness
     - [x] screenshot keymaps
-    - [ ] media keys
+    - [x] media keys
     - [x] tibetan/etc. keyboards
 - [ ] hooks
     - [ ] spotify to #5
-    - [ ] firefox to #2
-    - [ ] float gimp
+    - [x] firefox to #2
+    - [x] float gimp
 - [ ] PRs
     - [ ] consider reporting bug to ghc-mod people w.r.t. the .yaml file
